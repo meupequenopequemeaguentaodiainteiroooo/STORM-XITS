@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import config from './config.js';
 import { pool, initDb } from './db.js';
 import { gerarPixPayload } from './pix.js';
@@ -23,6 +23,29 @@ async function getNextAttendant() {
 
 client.once('ready', async () => {
   await initDb();
+  
+  const commands = [
+    new SlashCommandBuilder()
+      .setName('painel-atendimento')
+      .setDescription('Abre o painel de gerenciamento da fila de atendimento'),
+    new SlashCommandBuilder()
+      .setName('comprar')
+      .setDescription('Abre o catálogo para comprar produtos')
+  ].map(command => command.toJSON());
+
+  const rest = new REST({ version: '10' }).setToken(config.DISCORD_TOKEN);
+
+  try {
+    console.log('🔄 Registrando comandos Slash no Discord...');
+    await rest.put(
+      Routes.applicationCommands(config.CLIENT_ID),
+      { body: commands }
+    );
+    console.log('✅ Comandos registrados com sucesso!');
+  } catch (error) {
+    console.error('❌ Erro ao registrar comandos:', error);
+  }
+
   console.log(`🤖 Bot online como: ${client.user.tag}`);
 });
 

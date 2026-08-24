@@ -1,0 +1,18 @@
+{
+  "name": "bot-vendas-discord-pg",
+  "version": "1.0.0",
+  "description": "Bot de vendas Discord com PostgreSQL nativo do Railway e Pix",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "pg": "^8.11.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
